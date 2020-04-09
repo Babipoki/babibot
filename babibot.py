@@ -116,10 +116,16 @@ async def on_ready():
     await client.get_channel(397817169951588354).send('Bot ready. Restart/startup successful.')
     await client.get_channel(397817169951588354).send(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
     # Monster prep every 10 minutes
-    while True:
+    '''while True:
         await client.get_channel(397817169951588354).send('The monster is growing in size... He\'ll kill us all!')
-        time.sleep(60*10)
-            
+        time.sleep(600)'''
+    await monsterGrow()
+
+async def monsterGrow():
+    await client.get_channel(397817169951588354).send('The monster is growing in size... He\'ll kill us all!')
+    await asyncio.sleep(600)
+    await monsterGrow()
+
 def getDBdata(dbSelect, dbFrom, conditons = ''):
     query = f'SELECT {dbSelect} FROM {dbFrom} {conditons}'
     cnx = mysql.connector.connect(
@@ -134,5 +140,6 @@ def getDBdata(dbSelect, dbFrom, conditons = ''):
         return 'No Results'
     else:
         return cursor.fetchall()[0]
+
 client.run(TOKEN)
     
