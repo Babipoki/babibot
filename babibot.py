@@ -1,4 +1,4 @@
-import discord, random, string, mysql.connector, sys, asyncio, datetime, logging, os
+import discord, random, string, mysql.connector, sys, asyncio, datetime, logging, os, time
 from mysql.connector import errorcode
 from systemd.journal import JournalHandler
 
@@ -52,7 +52,7 @@ async def on_message(message):
     if (message.content.startswith('!newnickname') or message.content.startswith('!nn')):
         nicknames1 = ["Cockflipper", "Succotash", "Fucking", "Derpy", "Alcoholic", "Intolerant", "Appealing", "Indonesian", "Seaside", "Thrifty", "Unenjoyable", "Stupid", "Naked", "Orchestrated", "Unidentified", "Stupid", "Unused", "Untitled", "Boring"]
         nicknames2 = ["Charmander", "Bumbaloo", "Crocodile Hunter", "Puppy", "Radio Show Host", "Echidna", "Nut", "Dick", "Palm Tree", "Gangster", "Balloon", "Condomface", "Whippersnapper", "FUUUUUUUUUCK", "NPC", "side-quest NPC", "Lifeguard", "Donut", "Officer of Justice"]
-        oneWordNicknames = ["Dorito", "Rex", "Ahhhhhhhhhh", "?XD", "Ponies :D", "♥ Anal ♥", "♥ S E B A S T I A N ♥", "fucking" + randomString(10), "xXxUnTiTlEdAnGeLxXx", "PUSSY!!!!!!!!", "Belend"]
+        oneWordNicknames = ["Dorito", "Rex", "Ahhhhhhhhhh", "?XD", "Ponies :D", "♥ Anal ♥", "♥ S E B A S T I A N ♥", "fucking" + randomString(10), "xXxUnTiTlEdAnGeLxXx", "PUSSY!!!!!!!!", "Belend", "UNLICENSED ASS KICKER/KISSER", "Wuwu & Nillump"]
         insults = ["sucker", "boomer", "asshole", "cuck", "pipsqueak", "dickwad"]
         nickname = ""
         if random.randint(0, 1) == 1:
@@ -115,7 +115,24 @@ async def on_ready():
     
     await client.get_channel(397817169951588354).send('Bot ready. Restart/startup successful.')
     await client.get_channel(397817169951588354).send(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+    # Monster prep every 10 minutes
+    while True:
+        await client.get_channel(397817169951588354).send('The monster is growing in size... He\'ll kill us all!')
+        time.sleep(60*10)
             
-
+def getDBdata(dbSelect, dbFrom, conditons = ''):
+    query = f'SELECT {dbSelect} FROM {dbFrom} {conditons}'
+    cnx = mysql.connector.connect(
+            host='localhost',
+            database='babibot',
+            user='babipoki',
+            password=dbpwd
+        )
+    cursor = cnx.cursor(buffered=True)
+    cursor.execute(query)
+    if cursor.rowcount == 0:
+        return 'No Results'
+    else:
+        return cursor.fetchall()[0]
 client.run(TOKEN)
     
