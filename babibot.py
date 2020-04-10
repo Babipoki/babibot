@@ -1,6 +1,9 @@
-import discord, random, string, mysql.connector, sys, asyncio, datetime, logging, os, time
+import discord, random, string, mysql.connector, sys, asyncio, datetime, logging, os, time, battler, db
 from mysql.connector import errorcode
 from systemd.journal import JournalHandler
+from discord.ext import commands
+
+bot = commands.Bot(command_prefix='$$')
 
 path = '/usr/bin/'
 token_file = os.path.join(path, "token.txt")
@@ -38,21 +41,30 @@ xp = 0
 
 TOKEN = token
 
+async def dm_user(userid, message=None):
+    user = client.get_user(int(userid))
+    await discord.abc.Messageable.send(user, message)
+
 @client.event
 async def on_message(message):
     # we do not want the bot to reply to itself
     if message.author == client.user:
         return
-
+    
+    if isinstance(message.channel, discord.DMChannel):
+        await client.get_channel(397817169951588354).send('Message received from['+ str(message.author) +']: ' + message.content)
+    
     if message.content.startswith('hello'):
         msg = 'whats up fagggot, {0.author.mention}'.format(message)
-        #await client.send_message(message.channel, msg)
         await message.channel.send(msg)
+    
+    if message.content.startswith('!dm'):
+        await dm_user(message.content.split(' ')[1], ' '.join(message.content.split(' ')[2:]))
 
     if (message.content.startswith('!newnickname') or message.content.startswith('!nn')):
-        nicknames1 = ["Cockflipper", "Succotash", "Fucking", "Derpy", "Alcoholic", "Intolerant", "Appealing", "Indonesian", "Seaside", "Thrifty", "Unenjoyable", "Stupid", "Naked", "Orchestrated", "Unidentified", "Stupid", "Unused", "Untitled", "Boring"]
-        nicknames2 = ["Charmander", "Bumbaloo", "Crocodile Hunter", "Puppy", "Radio Show Host", "Echidna", "Nut", "Dick", "Palm Tree", "Gangster", "Balloon", "Condomface", "Whippersnapper", "FUUUUUUUUUCK", "NPC", "side-quest NPC", "Lifeguard", "Donut", "Officer of Justice"]
-        oneWordNicknames = ["Dorito", "Rex", "Ahhhhhhhhhh", "?XD", "Ponies :D", "♥ Anal ♥", "♥ S E B A S T I A N ♥", "fucking" + randomString(10), "xXxUnTiTlEdAnGeLxXx", "PUSSY!!!!!!!!", "Belend", "UNLICENSED ASS KICKER/KISSER", "Wuwu & Nillump"]
+        nicknames1 = ["Cockflipper", "Succotash", "Fucking", "Derpy", "Alcoholic", "Intolerant", "Appealing", "Indonesian", "Seaside", "Thrifty", "Unenjoyable", "Stupid", "Naked", "Orchestrated", "Unidentified", "Stupid", "Unused", "Untitled", "Boring", "Cricketsniffing", "Disposable", "Deplorable"]
+        nicknames2 = ["Charmander", "Bumbaloo", "Crocodile Hunter", "Puppy", "Radio Show Host", "Echidna", "Nut", "Dick", "Palm Tree", "Gangster", "Balloon", "Condomface", "Whippersnapper", "FUUUUUUUUUCK", "NPC", "side-quest NPC", "Lifeguard", "Donut", "Officer of Justice", "Buttsniffer", "Tree Branch", "Bunny Balloon", "Door Frame"]
+        oneWordNicknames = ["Dorito", "Rex", "Ahhhhhhhhhh", "?XD", "Ponies :D", "♥ Anal ♥", "♥ S E B A S T I A N ♥", "fucking" + randomString(10), "xXxUnTiTlEdAnGeLxXx", "PUSSY!!!!!!!!", "Belend", "UNLICENSED ASS KICKER/KISSER", "Wuwu & Nillump", "actually belend", "fart XDDDDDDDDDDDDDDDDDD"]
         insults = ["sucker", "boomer", "asshole", "cuck", "pipsqueak", "dickwad"]
         nickname = ""
         if random.randint(0, 1) == 1:
@@ -106,6 +118,8 @@ async def on_message(message):
         
 
 
+
+
 @client.event
 async def on_ready():
     print('Logged in as')
@@ -115,10 +129,6 @@ async def on_ready():
     
     await client.get_channel(397817169951588354).send('Bot ready. Restart/startup successful.')
     await client.get_channel(397817169951588354).send(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
-    # Monster prep every 10 minutes
-    '''while True:
-        await client.get_channel(397817169951588354).send('The monster is growing in size... He\'ll kill us all!')
-        time.sleep(600)'''
     await monsterGrow()
 
 async def monsterGrow():
@@ -126,20 +136,7 @@ async def monsterGrow():
     await asyncio.sleep(600)
     await monsterGrow()
 
-def getDBdata(dbSelect, dbFrom, conditons = ''):
-    query = f'SELECT {dbSelect} FROM {dbFrom} {conditons}'
-    cnx = mysql.connector.connect(
-            host='localhost',
-            database='babibot',
-            user='babipoki',
-            password=dbpwd
-        )
-    cursor = cnx.cursor(buffered=True)
-    cursor.execute(query)
-    if cursor.rowcount == 0:
-        return 'No Results'
-    else:
-        return cursor.fetchall()[0]
+
 
 client.run(TOKEN)
     
