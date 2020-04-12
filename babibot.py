@@ -1,4 +1,4 @@
-import discord, random, string, mysql.connector, sys, asyncio, datetime, logging, os, time, battler, db
+import discord, random, string, mysql.connector, sys, asyncio, datetime, logging, os, time, battler, db, work
 from mysql.connector import errorcode
 from systemd.journal import JournalHandler
 from discord.ext import commands
@@ -62,9 +62,9 @@ async def on_message(message):
         await dm_user(message.content.split(' ')[1], ' '.join(message.content.split(' ')[2:]))
 
     if (message.content.startswith('!newnickname') or message.content.startswith('!nn')):
-        nicknames1 = ["Cockflipper", "Succotash", "Fucking", "Derpy", "Alcoholic", "Intolerant", "Appealing", "Indonesian", "Seaside", "Thrifty", "Unenjoyable", "Stupid", "Naked", "Orchestrated", "Unidentified", "Stupid", "Unused", "Untitled", "Boring", "Cricketsniffing", "Disposable", "Deplorable", "Soviet", "Triggered"]
-        nicknames2 = ["Charmander", "Bumbaloo", "Crocodile Hunter", "Puppy", "Radio Show Host", "Echidna", "Nut", "Dick", "Palm Tree", "Gangster", "Balloon", "Condomface", "Whippersnapper", "FUUUUUUUUUCK", "NPC", "side-quest NPC", "Lifeguard", "Donut", "Officer of Justice", "Buttsniffer", "Tree Branch", "Bunny Balloon", "Door Frame", "Screwdriver", "Mouse Balloon", "Cockroach"]
-        oneWordNicknames = ["Dorito", "Rex", "Ahhhhhhhhhh", "?XD", "Ponies :D", "♥ Anal ♥", "♥ S E B A S T I A N ♥", "fucking" + randomString(10), "xXxUnTiTlEdAnGeLxXx", "PUSSY!!!!!!!!", "Belend", "UNLICENSED ASS KICKER/KISSER", "Wuwu & Nillump", "actually belend", "fart XDDDDDDDDDDDDDDDDDD", "xXxUnfisted FisterxXx", 'xXxXgLoRiOuSpRiNcEoFdArKnEsSXxXx']
+        nicknames1 = ["Cockflipper", "Succotash", "Fucking", "Derpy", "Alcoholic", "Intolerant", "Appealing", "Indonesian", "Seaside", "Thrifty", "Unenjoyable", "Stupid", "Naked", "Orchestrated", "Unidentified", "Stupid", "Unused", "Untitled", "Boring", "Cricketsniffing", "Disposable", "Deplorable", "Soviet", "Triggered", "Republican", "Cute", "Limitless", "Sobbing"]
+        nicknames2 = ["Charmander", "Bumbaloo", "Crocodile Hunter", "Puppy", "Radio Show Host", "Echidna", "Nut", "Dick", "Palm Tree", "Gangster", "Balloon", "Condomface", "Whippersnapper", "FUUUUUUUUUCK", "NPC", "side-quest NPC", "Lifeguard", "Donut", "Officer of Justice", "Buttsniffer", "Tree Branch", "Bunny Balloon", "Door Frame", "Screwdriver", "Mouse Balloon", "Cockroach", "Gorilla", "Sandshrew", "Scorbunny", "Pikachu", "Sobble"]
+        oneWordNicknames = ["Dorito", "Rex", "Ahhhhhhhhhh", "?XD", "Ponies :D", "♥ Anal ♥", "♥ S E B A S T I A N ♥", "fucking" + randomString(10), "xXxUnTiTlEdAnGeLxXx", "PUSSY!!!!!!!!", "Belend", "UNLICENSED ASS KICKER/KISSER", "Wuwu & Nillump", "actually belend", "fart XDDDDDDDDDDDDDDDDDD", "xXxUnfisted FisterxXx", 'xXxXgLoRiOuSpRiNcEoFdArKnEsSXxXx', "Sexmaster Extraordinaire", "Fucky Sucky", "Gender Gap", "D R A G O N  O F  J U S T I C E"]
         insults = ["sucker", "boomer", "asshole", "cuck", "pipsqueak", "dickwad", "edgelord", "Mr Crangis McBasketball"]
         nickname = ""
         if random.randint(0, 1) == 1:
@@ -115,6 +115,27 @@ async def on_message(message):
         if (cnx.is_connected()):
             cnx.close()
             cursor.close()
+    if message.content.startswith("!work"):
+        print ("You typed !work")
+        if work.workedToday(message.author.id):
+            print(work.workedToday(message.author.id))
+            await message.channel.send("You have already worked today.")
+        else:
+            print(work.workedToday(message.author.id))
+            reply = "Penis"
+            reply = work.goToWork(message.author.id)
+            print (reply)
+            await message.channel.send(reply)
+    if message.content.startswith("!dollars"):
+        reply = work.getDollars(message.author.id)
+        await message.channel.send(reply)
+    if message.content.startswith("!jobs"):
+        reply = ""
+        for i in range(0, len(work.jobs)-1):
+            i = str(i)
+            reply += "**" + work.jobs[i]['name'] + "** | Salary: " + str(work.jobs[i]['salary']) + " | Min XP: " + str(work.jobs[i]['minXP']) + "\n"
+        await message.channel.send(reply)
+
         
 
 

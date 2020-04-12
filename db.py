@@ -21,3 +21,20 @@ def getData(dbSelect, dbFrom, conditons = ''):
         return 'No Results'
     else:
         return cursor.fetchall()[0]
+    cursor.close()
+    cnx.close()
+
+def setData(table, setQuery, where):
+    query = f'UPDATE {table} SET {setQuery} WHERE {where}'
+    cnx = mysql.connector.connect(
+            host='localhost',
+            database='babibot',
+            user='babipoki',
+            password=dbpwd
+        )
+    cursor = cnx.cursor(buffered=True)
+    cursor.execute(query)
+    cnx.commit()
+    print(cursor.rowcount, "record(s) affected")
+    cursor.close()
+    cnx.close()
