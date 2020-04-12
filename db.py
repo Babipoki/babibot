@@ -24,7 +24,9 @@ def getData(dbSelect, dbFrom, conditons = ''):
     cursor.close()
     cnx.close()
 
+
 def setData(table, setQuery, where):
+    '''Set data of the database. First entry is the name of the table...'''
     query = f'UPDATE {table} SET {setQuery} WHERE {where}'
     cnx = mysql.connector.connect(
             host='localhost',

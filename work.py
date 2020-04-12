@@ -40,6 +40,7 @@ def goToWork(discordID):
     db.setData('users', 'experience=' + str(currentXP + jobs[jobID]['xpPerWork']), "discordid=" + discordID)
     return f"You have worked as a {jobTitle}. {customEvent} You earned {str(jobSalary)} dollars and {str(jobs[jobID]['xpPerWork'])} XP."
 
+# Get how many dollars you have, in a full string.
 def getDollars(discordID):
     discordID = '\'' + str(discordID) + '\''
     result = str(db.getData("dollars", "users", "WHERE discordid=" + discordID)[0])
@@ -47,3 +48,38 @@ def getDollars(discordID):
         return "You have no account set up. Type !xp to begin."
     else:
         return f'You have {result} dollars in your pocket.'
+
+# Apply to a job. Returns a string whether it's successful or not.
+def applyToJob(discordID, job):
+    discordID = '\'' + str(discordID) + '\''
+    jobID = getJobID(job)
+    currentJobID = str(db.getData('jobid', 'users', 'WHERE discordid=' + discordID)[0])
+    currentXP = db.getData('experience', 'users', 'WHERE discordid=' + discordID)[0]
+    neededXP = jobs[jobID]['minXP']
+    if (getJobID(job) == "N/A"):
+        return "What are you even applying to, dumbass? Check !jobs, if you're such a smartass."
+    if (jobID == currentJobID):
+        return f"You are already employed as {job}."
+    else:
+        if (currentXP < neededXP):
+            return f"You don't have enough experience to apply to a position of {job}. Get lost, loser."
+        else:
+            #Succeed at job application
+            db.setData("users", f"jobid={jobID}", f"discordid={discordID}")
+            return f"You have been accepted to the position of {job}. Congratulations!"
+    
+
+def getJobID(jobStr):
+    for i in jobs:
+        if jobs[i]['name'] == jobStr:
+            return i
+    return "N/A"
+
+
+def getCurrentJob(discordID):
+    discordID = '\'' + str(discordID) + '\''
+    jobid = str(db.getData("jobid", "users", "WHERE discordid=" + discordID)[0])
+    if jobid == "No Results":
+        return "You have no account set up. Type !xp to begin."
+    else:
+        return f'Your current job is {jobs[jobid]["name"]}.'

@@ -1,4 +1,4 @@
-import discord, random, string, mysql.connector, sys, asyncio, datetime, logging, os, time, battler, db, work
+import discord, random, string, mysql.connector, sys, asyncio, datetime, logging, os, time, battler, db, work, helpCmds
 from mysql.connector import errorcode
 from systemd.journal import JournalHandler
 from discord.ext import commands
@@ -130,15 +130,24 @@ async def on_message(message):
         reply = work.getDollars(message.author.id)
         await message.channel.send(reply)
     if message.content.startswith("!jobs"):
-        reply = ""
-        for i in range(0, len(work.jobs)-1):
+        reply = ">>> "
+        for i in range(0, len(work.jobs)):
             i = str(i)
             reply += "**" + work.jobs[i]['name'] + "** | Salary: " + str(work.jobs[i]['salary']) + " | Min XP: " + str(work.jobs[i]['minXP']) + "\n"
         await message.channel.send(reply)
+    if message.content.startswith("!apply"):
+        reply = ""
+        reply = work.applyToJob(message.author.id, ' '.join(message.content.split(' ')[1:]))
+        await message.channel.send(reply)
+    if message.content == "!job" or message.content == "!myjob":
+        await message.channel.send(work.getCurrentJob(message.author.id))
+    if message.content == "!help":
+        reply = ">>> "
+        for i in range(0, len(helpCmds.generalCommands)):
+            reply += f"**{helpCmds.generalCommands[i][0]}** - {helpCmds.generalCommands[i][1]}\n"
+        await message.channel.send(reply)
 
         
-
-
 
 
 @client.event
