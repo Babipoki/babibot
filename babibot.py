@@ -1,4 +1,4 @@
-import discord, random, string, mysql.connector, sys, asyncio, datetime, logging, os, time, battler, db, work, helpCmds
+import discord, random, string, mysql.connector, sys, asyncio, datetime, logging, os, time, battler, db, work, helpCmds, inventory
 from mysql.connector import errorcode
 from systemd.journal import JournalHandler
 from discord.ext import commands
@@ -132,7 +132,6 @@ async def on_message(message):
     if message.content.startswith("!jobs"):
         reply = ">>> "
         for i in range(0, len(work.jobs)):
-            i = str(i)
             reply += "**" + work.jobs[i]['name'] + "** | Salary: " + str(work.jobs[i]['salary']) + " | Min XP: " + str(work.jobs[i]['minXP']) + "\n"
         await message.channel.send(reply)
     if message.content.startswith("!apply"):
@@ -145,6 +144,12 @@ async def on_message(message):
         reply = ">>> "
         for i in range(0, len(helpCmds.generalCommands)):
             reply += f"**{helpCmds.generalCommands[i][0]}** - {helpCmds.generalCommands[i][1]}\n"
+        await message.channel.send(reply)
+    if message.content == "!inventory" or message.content == "!i" or message.content == "!inv":
+        try:
+            reply = inventory.listInventory(message.author.id)
+        except:
+            reply = "You don't have an account set up. Type !xp to begin."
         await message.channel.send(reply)
 
         

@@ -1,21 +1,42 @@
 import datetime, db, random
 
-jobs = {
-    '0': {
+jobs = [
+    {
         'name': 'Janitor',
         'minXP': 0,
         "salary": 2,
         "xpPerWork": 1,
-        "customEvents": ["You cleaned dog's poop today.", "You had fun."]
+        "customEvents": ["You cleaned dog's poop today.", "You had fun.", "You used extra bleach today.", "You spent entire day binge-watching Bleach anime.", "You cleaned your boss's shoes.", "You had to clean up all the popped balloons from the party.", "The day was boring as heck."]
     },
-    '1': {
+    {
         'name': 'Cookie Factory Worker',
         'minXP': 5,
         'salary': 4,
         'xpPerWork': 2,
-        "customEvents": ["You slipped on the floor.", "You ate a cookie without anyone noticing."]
+        "customEvents": ["You slipped on the floor.", "You ate a cookie without anyone noticing.", "You stole a bunch of cookies for your starving family.", "You banged your co-worker at the metro station bathroom.", "You came home very tired."]
+    },
+    {
+        'name': "Train Conductor",
+        'minXP': 15,
+        'salary': 6,
+        'xpPerWork': 3,
+        'customEvents': ["You were offered a balloon in exchange for not fining a ticketless boy.", "You had a boring day.", "Nothing interesting happened."]
+    },
+    {
+        'name': 'Balloon Vendor',
+        'minXP': 35,
+        'salary': 8,
+        'xpPerWork': 4,
+        'customEvents': ["You exchanged a popped balloon for a new one, but then you noticed a pattern.", "You had a blast... popping all the balloons at the end of the shift.", "What a boring day..."]
+    },
+    {
+        'name': 'Traveling Balloon Merchant',
+        'minXP': 50,
+        'salary': 10,
+        'xpPerWork': 5,
+        'customEvents': ["You traveled to five cities today to bring joy to all the children.", "You were arrested by the gang of children and had to pay a fine of 15 balloons you were supposed to sell today."]
     }
-}
+]
 
 def workedToday(discordID):
     discordID = '\'' + str(discordID) + '\''
@@ -26,7 +47,7 @@ def workedToday(discordID):
 
 def goToWork(discordID):
     discordID = '\'' + str(discordID) + '\''
-    jobID = str(db.getData('jobid', 'users', 'WHERE discordid=' + discordID)[0])
+    jobID = int(db.getData('jobid', 'users', 'WHERE discordid=' + discordID)[0])
     timesWorked = db.getData('timesWorked', 'users', 'WHERE discordid=' + discordID)[0]
     currentXP = db.getData('experience', 'users', 'WHERE discordid=' + discordID)[0]
     jobTitle = jobs[jobID]['name']
@@ -53,10 +74,11 @@ def getDollars(discordID):
 def applyToJob(discordID, job):
     discordID = '\'' + str(discordID) + '\''
     jobID = getJobID(job)
-    currentJobID = str(db.getData('jobid', 'users', 'WHERE discordid=' + discordID)[0])
+    currentJobID = int(db.getData('jobid', 'users', 'WHERE discordid=' + discordID)[0])
     currentXP = db.getData('experience', 'users', 'WHERE discordid=' + discordID)[0]
-    neededXP = jobs[jobID]['minXP']
-    if (getJobID(job) == "N/A"):
+    try: 
+        neededXP = jobs[jobID]['minXP']
+    except:
         return "What are you even applying to, dumbass? Check !jobs, if you're such a smartass."
     if (jobID == currentJobID):
         return f"You are already employed as {job}."
@@ -70,7 +92,7 @@ def applyToJob(discordID, job):
     
 
 def getJobID(jobStr):
-    for i in jobs:
+    for i in range(0, len(jobs)):
         if jobs[i]['name'] == jobStr:
             return i
     return "N/A"
@@ -78,7 +100,7 @@ def getJobID(jobStr):
 
 def getCurrentJob(discordID):
     discordID = '\'' + str(discordID) + '\''
-    jobid = str(db.getData("jobid", "users", "WHERE discordid=" + discordID)[0])
+    jobid = db.getData("jobid", "users", "WHERE discordid=" + discordID)[0]
     if jobid == "No Results":
         return "You have no account set up. Type !xp to begin."
     else:
