@@ -6,7 +6,8 @@ generalCommands = [
     ["!work", "Go to work (once a day)."],
     ["!dollars", "Checks how many dollars you have."],
     ["!nn", "Sets yourself a new generated nickname."],
-    ["!inventory", "Checks your inventory. Can also use !i or !inv."]
+    ["!inventory", "Checks your inventory. Can also use !i or !inv."],
+    ["!sell [quantity] [item]", "Sell an item or a set of items from your inventory."]
 ]
 
     

@@ -24,20 +24,13 @@ log.addHandler(JournalHandler())
 log.setLevel(logging.INFO)
 log.debug("Logger started.")
 
-"""
-cnx = mysql.connector.connect(
-            host='localhost',
-            database='babibot',
-            user='babipoki',
-            password=dbpwd
-        )
-
-
-cursor = cnx.cursor()
-"""
 query = ("")
 xp = 0
 
+
+currentDrop = "N/A"
+currentDropQuantity = 0
+dropChannelID = 563429049767165974 # #spam
 
 TOKEN = token
 
@@ -151,6 +144,23 @@ async def on_message(message):
         except:
             reply = "You don't have an account set up. Type !xp to begin."
         await message.channel.send(reply)
+    if message.content == "!sell":
+        await message.channel.send("Please use the following format: ``!sell [quantity] [item]``")
+    elif message.content.startswith("!sell"):
+        try:
+            quantity = message.content.split(' ')[1]
+            item = ' '.join(message.content.split(' ')[2:])
+            itemPrice = inventory.getItemPrice(item) * int(quantity)
+            result = inventory.sellItem(message.author.id, item, quantity)
+            if (result == True):
+                await message.channel.send(f'>>> Successfully sold {quantity} {item} for {str(itemPrice)} dollars.')
+            else:
+                await message.channel.send(f">>> Error. Couldn't sell {quantity} {item}.")
+        except ValueError as e:
+            await message.channel.send("Invalid syntax. Please use the following format: ``!sell [quantity] [item]``")
+            print (e)
+    if message.content == "!pickup" or message.content == "!p" or message.content == "!pick" or message.content == "!grab":
+        await pickDropUp(message.author.id)
 
         
 
@@ -161,17 +171,76 @@ async def on_ready():
     print(client.user.name)
     print(client.user.id)
     print('------')
+
+
     
     await client.get_channel(397817169951588354).send('Bot ready. Restart/startup successful.')
     await client.get_channel(397817169951588354).send(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
-    await monsterGrow()
+    #await monsterGrow()
+    await dropEnumerator()
 
+'''
 async def monsterGrow():
     await client.get_channel(397817169951588354).send('The monster is growing in size... He\'ll kill us all!')
     await asyncio.sleep(600)
     await monsterGrow()
+''' 
 
 
+
+
+def getNextDropItem():
+    dropping = [-1, -1]
+    dropItem = -1
+    while dropItem == -1:
+        randomChance = random.random() * 100
+        randItemID = random.randint(0, len(inventory.items) - 1)
+        spawnRate = inventory.items[randItemID]['spawnRate']
+        if (randomChance >= spawnRate):
+            dropItem = randItemID
+    dropQuantity = random.randint(inventory.items[dropItem]['spawnMin'], inventory.items[dropItem]['spawnMax'])
+    dropping = [dropItem, dropQuantity]
+    return dropping
+                
+
+async def dropItem():
+    global currentDrop
+    global currentDropQuantity
+    drop = getNextDropItem()
+    currentDrop = inventory.items[drop[0]]['name']
+    currentDropQuantity = drop[1]
+    if currentDropQuantity == 1:
+        await client.get_channel(dropChannelID).send(f">>> A **{currentDrop}** has dropped on the ground. Type !pickup to pick it up.")
+    else:
+        await client.get_channel(dropChannelID).send(f">>> {str(currentDropQuantity)} **{inventory.getPlural(currentDrop)}** dropped on the ground. Type !pickup to pick them up.")
+
+async def pickDropUp(discordID):
+    global currentDrop, currentDropQuantity
+    if currentDrop != "N/A":
+        try:
+            inventory.addToInventory(discordID, currentDrop, currentDropQuantity)
+            if currentDropQuantity == 1:
+                await client.get_channel(dropChannelID).send(f">>> You picked up a {currentDrop}.")
+                currentDrop = "N/A"
+                currentDropQuantity = 0
+            else:
+                await client.get_channel(dropChannelID).send(f">>> You picked up {str(currentDropQuantity)} {inventory.getPlural(currentDrop)}.")
+                currentDrop = "N/A"
+                currentDropQuantity = 0
+        except ValueError as e:
+            print (e)
+            print (currentDrop)
+            print (currentDropQuantity)
+            await client.get_channel(dropChannelID).send(f">>> There's no space in your inventory.")
+    else:
+        await client.get_channel(dropChannelID).send(f">>> There's nothing to pick up.")
+
+async def dropEnumerator():
+    global currentDrop
+    while True:
+        await asyncio.sleep(random.randint(15, 250))
+        if (currentDrop == "N/A"):
+            await dropItem()
 
 client.run(TOKEN)
     

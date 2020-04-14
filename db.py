@@ -7,7 +7,7 @@ pwd_file = os.path.join(path, "dbpw.txt")
 with open(pwd_file, 'r') as f:
     dbpwd = f.read().replace('\n', '')
 
-def getData(dbSelect, dbFrom, conditons = ''):
+def getData(dbSelect, dbFrom, conditons = '', multiple=False):
     query = f'SELECT {dbSelect} FROM {dbFrom} {conditons}'
     cnx = mysql.connector.connect(
             host='localhost',
@@ -20,7 +20,10 @@ def getData(dbSelect, dbFrom, conditons = ''):
     if cursor.rowcount == 0:
         return 'No Results'
     else:
-        return cursor.fetchall()[0]
+        if (multiple == False):
+            return cursor.fetchall()[0]
+        else:
+            return cursor.fetchall()
     cursor.close()
     cnx.close()
 

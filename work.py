@@ -35,6 +35,27 @@ jobs = [
         'salary': 10,
         'xpPerWork': 5,
         'customEvents': ["You traveled to five cities today to bring joy to all the children.", "You were arrested by the gang of children and had to pay a fine of 15 balloons you were supposed to sell today."]
+    },
+    {
+        'name': 'Banker',
+        'minXP': 85,
+        'salary': 12,
+        'xpPerWork': 6,
+        'customEvents': ["You gave a loan to balloon entrepreneur today.", "Nothing interesting happened today.", "Your bank was robbed today."]
+    },
+    {
+        'name': 'Mercenary',
+        'minXP': 125,
+        'salary': 14,
+        'xpPerWork': 7,
+        'customEvents' : ["You protected a traveling caravan today.", "You didn't get hired by anybody today.", "Today was boring.", "What a tiring day...", "You fought in a war today."]
+    },
+    {
+        'name': 'Mercenary Guild Leader',
+        'minXP': 200,
+        'salary': 16,
+        'xpPerWork': 8,
+        'customEvents': ["Nothing interesting happned today.", "You hired some great mercenaries today."]
     }
 ]
 
