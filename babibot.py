@@ -1,4 +1,4 @@
-import discord, random, string, mysql.connector, sys, asyncio, datetime, logging, os, time, battler, db, work, helpCmds, inventory
+import discord, random, string, mysql.connector, sys, asyncio, datetime, logging, os, time, battler, db, work, helpCmds, inventory, ia
 from mysql.connector import errorcode
 from systemd.journal import JournalHandler
 from discord.ext import commands
@@ -160,7 +160,22 @@ async def on_message(message):
             await message.channel.send("Invalid syntax. Please use the following format: ``!sell [quantity] [item]``")
             print (e)
     if message.content == "!pickup" or message.content == "!p" or message.content == "!pick" or message.content == "!grab":
-        await pickDropUp(message.author.id)
+        if message.channel.id == dropChannelID:
+            await pickDropUp(message.author.id)
+        else:
+            await message.channel.send("You can only pick up items in the drops channel.")
+    if message.content.startswith("!give"):
+        if message.content == "!give":
+            await message.channel.send("The syntax is !give [mention] [quantity] [item].")
+        else:
+            quantity = int(message.content.split(" ")[2])
+            item = " ".join(message.content.split(" ")[3:])
+            reply = inventory.giveItem(message.author.id, message.mentions[0].id, str(quantity), item)
+            if (reply == True):
+                numerator = f"{ia.indefinite_article(item)} {inventory.getSingular(item)}" if quantity == 1 else f"{quantity} {inventory.getPlural(item)}"
+                await message.channel.send(f">>> Successfully given {numerator} to {message.mentions[0].mention}.")
+            else:
+                await message.channel.send(reply)
 
         
 
@@ -196,7 +211,7 @@ def getNextDropItem():
         randomChance = random.random() * 100
         randItemID = random.randint(0, len(inventory.items) - 1)
         spawnRate = inventory.items[randItemID]['spawnRate']
-        if (randomChance >= spawnRate):
+        if (randomChance <= spawnRate):
             dropItem = randItemID
     dropQuantity = random.randint(inventory.items[dropItem]['spawnMin'], inventory.items[dropItem]['spawnMax'])
     dropping = [dropItem, dropQuantity]

@@ -285,3 +285,21 @@ def sellItem (discordID, item, quantity):
     else:
         return False
 
+def giveItem (fromDiscordID, toDiscordID, quantity, item):
+    if (fromDiscordID == toDiscordID):
+        return ">>> Like... literally how retarded are you? Do you have brain? Do you possess a single digit of IQ? What's your problem?"
+    if (getItemExistsPosition(fromDiscordID, item) != -1):
+        if (getFreeInventorySlot(toDiscordID) != -1):
+            giverSlot = getItemExistsPosition(fromDiscordID, item)
+            giverInventory = getInventory(fromDiscordID)
+            if (giverInventory[giverSlot][1] >= quantity):
+                removeFromInventory(fromDiscordID, item, quantity)
+                addToInventory(toDiscordID, item, quantity)
+                return True
+            else:
+                return f">>> You don't have that many {getPlural(item)}."
+        else:
+            return f">>> Target doesn't have enough inventory slots or doesn't have an account set up. Tell them to type !xp?"
+    else:
+        return f">>> You don't have that item, or you followed wrong syntax. Use !give [mention] [qt] [item]."
+            
