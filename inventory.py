@@ -302,4 +302,17 @@ def giveItem (fromDiscordID, toDiscordID, quantity, item):
             return f">>> Target doesn't have enough inventory slots or doesn't have an account set up. Tell them to type !xp?"
     else:
         return f">>> You don't have that item, or you followed wrong syntax. Use !give [mention] [qt] [item]."
+
+def payDollars (fromDiscordID, toDiscordID, quantity):
+    if (toDiscordID == fromDiscordID):
+        return ">>> You're trying to pay to yourself. That's not even how Patreon works."
+    giverDollars = int(db.getData("dollars", "users", f"WHERE discordid='{str(fromDiscordID)}'")[0])
+    recipientDollars = int(db.getData("dollars", "users", f"WHERE discordid='{str(toDiscordID)}'")[0])
+    if (giverDollars >= int(quantity)):
+        db.setData("users", f"dollars={str(giverDollars - int(quantity))}", f"discordid='{str(fromDiscordID)}'")
+        db.setData("users", f"dollars={str(recipientDollars + int(quantity))}", f"discordid='{str(toDiscordID)}'")
+        return True
+    else:
+        return ">>> You don't have enough dollars to pay. Have you tried contacting Babibank?"
+    return "Error. Get help."
             

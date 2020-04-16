@@ -1,4 +1,4 @@
-import discord, random, string, mysql.connector, sys, asyncio, datetime, logging, os, time, battler, db, work, helpCmds, inventory, ia
+import discord, random, string, mysql.connector, sys, asyncio, datetime, logging, os, time, battler, db, work, helpCmds, inventory, ia, nations
 from mysql.connector import errorcode
 from systemd.journal import JournalHandler
 from discord.ext import commands
@@ -26,7 +26,6 @@ log.debug("Logger started.")
 
 query = ("")
 xp = 0
-
 
 currentDrop = "N/A"
 currentDropQuantity = 0
@@ -176,6 +175,24 @@ async def on_message(message):
                 await message.channel.send(f">>> Successfully given {numerator} to {message.mentions[0].mention}.")
             else:
                 await message.channel.send(reply)
+    if message.content.startswith("!pay"):
+        if message.content == "!pay":
+            await message.channel.send("The syntax is !pay [mention] [amount].")
+        else:
+            quantity = int(message.content.split(" ")[2])
+            reply = inventory.payDollars(message.author.id, message.mentions[0].id, str(quantity))
+            if (reply == True):
+                numerator = f"a dollar" if quantity == 1 else f"{quantity} dollars"
+                await message.channel.send(f">>> You have paid {message.mentions[0].mention} a hefty sum of {numerator}.")
+            else:
+                await message.channel.send(reply)
+    if message.content == "!map":
+        nations.makeMap()
+        #e = discord.Embed()
+        #e.set_image(url="https://babipoki.com/characters/Babi%20Island.svg")
+        file = discord.File(path+"Babi_Island.png", filename="island.png")
+        #await message.channel.send(embed=e)
+        await message.channel.send(file=file)
 
         
 
