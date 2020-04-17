@@ -1,4 +1,4 @@
-import discord, random, string, mysql.connector, sys, asyncio, datetime, logging, os, time, battler, db, work, helpCmds, inventory, ia, nations
+import discord, random, string, mysql.connector, sys, asyncio, datetime, logging, os, time, battler, db, work, helpCmds, inventory, ia, nations, re
 from mysql.connector import errorcode
 from systemd.journal import JournalHandler
 from discord.ext import commands
@@ -147,14 +147,17 @@ async def on_message(message):
         await message.channel.send("Please use the following format: ``!sell [quantity] [item]``")
     elif message.content.startswith("!sell"):
         try:
-            quantity = message.content.split(' ')[1]
-            item = ' '.join(message.content.split(' ')[2:])
+            quantity = int(message.content.split(' ')[1])
+            item = inventory.getSingular(' '.join(message.content.split(' ')[2:]))
             itemPrice = inventory.getItemPrice(item) * int(quantity)
             result = inventory.sellItem(message.author.id, item, quantity)
             if (result == True):
-                await message.channel.send(f'>>> Successfully sold {quantity} {item} for {str(itemPrice)} dollars.')
+                numerator = f"{ia.indefinite_article(item)} {item}" if quantity == 1 else f"{quantity} {inventory.getPlural(item)}"
+                dollarTag = "dollar" if itemPrice == 1 else "dollars"
+                await message.channel.send(f'>>> Successfully sold {numerator} for {str(itemPrice)} {dollarTag}.')
             else:
-                await message.channel.send(f">>> Error. Couldn't sell {quantity} {item}.")
+                numerator = f"{ia.indefinite_article(item)} {item}" if quantity == 1 else f"{quantity} {inventory.getPlural(item)}"
+                await message.channel.send(f">>> Error. Couldn't sell {numerator}.")
         except ValueError as e:
             await message.channel.send("Invalid syntax. Please use the following format: ``!sell [quantity] [item]``")
             print (e)
@@ -193,6 +196,42 @@ async def on_message(message):
         file = discord.File(path+"Babi_Island.png", filename="island.png")
         #await message.channel.send(embed=e)
         await message.channel.send(file=file)
+    if message.content.startswith("!combine"):
+        regex = r"!combine (.*) with (.*)"
+        m = re.search(regex, message.content)
+        item1 = m.group(1)
+        item2 = m.group(2)
+        reply = inventory.combine(message.author.id, item1, item2)
+        if reply[0] == True:
+            if item1 == item2:
+                combinationText = f"{str(int(reply[2][0] + reply[2][1]))} {inventory.getPlural(item1)}"
+            else:
+                combinationText = f"{reply[2][0]} {inventory.getSingular(item1) if reply[2][0] == 1 else inventory.getPlural(item1)} and {reply[2][1]} {inventory.getSingular(item2) if reply[2][1] == 1 else inventory.getPlural(item2)}"
+            if reply[3] == 1:
+                creation = f"{ia.indefinite_article(reply[4])} {inventory.getSingular(reply[4])}"
+            else:
+                creation = f"{reply[3]} {inventory.getPlural(reply[4])}"
+            newReply = f">>> Successfully combined {combinationText} to create **{creation}**."
+            await message.channel.send(newReply)
+        if (message.content == "!use"):
+                await message.channel.send(">>> Invalid syntax. Please use !combine <item name> with <second item name>.")
+        elif (reply[0] == False):
+            await message.channel.send(">>>" + reply[1])
+    if message.content.startswith("!use"):
+        regex = r"!use (.*)"
+        m = re.search(regex, message.content)
+        item = m.group(1)
+        reply = inventory.useItem(message.author.id, item)
+        if (reply[0] == True):
+            # Space in here in case I add something later.
+            await message.channel.send(">>> " + reply[1])
+        else:
+            await message.channel.send(">>> " + reply[1])
+        if (message.content == "!use"):
+            await message.channel.send(">>> Invalid syntax. Please use !use <item name>.")
+
+
+
 
         
 
@@ -270,7 +309,7 @@ async def pickDropUp(discordID):
 async def dropEnumerator():
     global currentDrop
     while True:
-        await asyncio.sleep(random.randint(15, 250))
+        await asyncio.sleep(random.randint(35, 450))
         if (currentDrop == "N/A"):
             await dropItem()
 
