@@ -43,3 +43,4 @@ def setData(table, setQuery, where):
     print(cursor.rowcount, "record(s) affected")
     cursor.close()
     cnx.close()
+    return True

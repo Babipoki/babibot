@@ -229,6 +229,24 @@ async def on_message(message):
             await message.channel.send(">>> " + reply[1])
         if (message.content == "!use"):
             await message.channel.send(">>> Invalid syntax. Please use !use <item name>.")
+    if message.content.startswith("!join"):
+        if message.content == "!join":
+            file = discord.File(path+"welcome.jpg", filename="welcome.jpg")
+            await message.channel.send(file=file)
+        else:
+            nationID = int(message.content.split(" ")[1])
+            reply = nations.joinNation(message.author.id, nationID)
+            await message.channel.send(reply[1])
+    if message.content == "!nation":
+        reply = nations.getPlayerNation(message.author.id)
+        await message.channel.send(reply)
+    if message.content == "!location" or message.content == "!province":
+        prov = nations.getPlayerProvince(message.author.id)
+        if prov[0] == True:
+            await message.channel.send(f">>> You are currently located in **{prov[1]}**.")
+        else:
+            await message.channel.send(f">>> There was an error somewhere. Are you signed up properly?")
+
 
 
 

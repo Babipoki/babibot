@@ -8,7 +8,7 @@ items = [
         "sellPrice": 3,
         "sellable": True,
         "tradable": True,
-        "spawnRate": 40.5,
+        "spawnRate": 13.5,
         "spawnMin": 1,
         "spawnMax": 8,
         "craft" : {
@@ -21,7 +21,7 @@ items = [
         "sellPrice": 1,
         "sellable": True,
         "tradable": True,
-        "spawnRate": 32.15,
+        "spawnRate": 12.15,
         "spawnMin": 1,
         "spawnMax": 2,
         "craft": {
@@ -85,7 +85,7 @@ items = [
         "sellPrice": 1,
         "sellable": True,
         "tradable": True,
-        "spawnRate": 13.25,
+        "spawnRate": 11.25,
         "spawnMin": 1,
         "spawnMax": 4,
         "craft": {
@@ -102,7 +102,7 @@ items = [
         "sellPrice": 14,
         "sellable": True,
         "tradable": True,
-        "spawnRate": 0.05,
+        "spawnRate": 1.25,
         "spawnMin": 1,
         "spawnMax": 1,
         "craft": {
@@ -132,9 +132,56 @@ items = [
         "sellPrice": 3,
         "sellable": True,
         "tradable": True,
-        "spawnRate": 5.15,
+        "spawnRate": 7.15,
         "spawnMin": 1,
         "spawnMax": 3,
+        "craft": {
+
+        }
+    },
+    {
+        "name": "popped balloon",
+        "plural": "popped balloons",
+        "sellPrice": 1,
+        "sellable": True,
+        "tradable": True,
+        "spawnRate": 2.15,
+        "spawnMin": 1,
+        "spawnMax": 13,
+        "craft": {
+            "furnace": {
+                "result": "bucket of latex",
+                "resultQuantity": 1,
+                "inputQuantity": [4, 0]
+            }
+        }
+    },
+    {
+        "name": "needle",
+        "plural": "needles",
+        "sellPrice": 1,
+        "sellable": True,
+        "tradable": True,
+        "spawnRate": 4.95,
+        "spawnMin": 1,
+        "spawnMax": 2,
+        "craft": {
+            "balloon": {
+                "result": "popped balloon",
+                "resultQuantity": 1,
+                "inputQuantity": [0, 1]
+            }
+        }
+    },
+    {
+        "name": "XP bottle",
+        "plural": "XP bottles",
+        "sellPrice": 15,
+        "sellable": True,
+        "tradable": True,
+        "spawnRate": 1.05,
+        "spawnMin": 1,
+        "spawnMax": 2,
         "craft": {
 
         }
@@ -393,5 +440,12 @@ def useItem(discordID, item):
                 return [True, "You were playing with your balloon, but suddenly it hit the grass and popped."]
             elif 46 <= luck <= 100:
                 return [True, "Yay! You had fun playing with your balloon!"]
+        # XP bottle
+        if (item == "XP bottle"):
+            randomXP = random.randint(1, 6)
+            playerXP = db.getData("experience", "users", f"discordid='{str(discordID)}'")[0]
+            removeFromInventory(discordID, item, 1)
+            db.setData("users", f"experience={playerXP+randomXP}", f"discordid='{str(discordID)}'")
+            return [True, f"You drank the XP potion and gained {randomXP} XP from it."]
         return [True, f"Nothing interesting happened from using your {item}."]
     return [False, "You don't have such an item to use it."]
