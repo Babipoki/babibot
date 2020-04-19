@@ -75,6 +75,9 @@ def getProvinceOwnerships():
 def getProvinceName(provinceID):
     return db.getData("provinceName", "provinces", f"WHERE provinceID={provinceID}")[0]
 
+def getProvinceID(provinceName):
+    return int(db.getData("provinceID", "provinces", f"WHERE provinceName='{provinceName}'")[0])
+
 def joinNation(discordID, nationID):
     nationID = int(nationID)
     if nationID not in range(0, 3):
@@ -99,6 +102,36 @@ def joinNation(discordID, nationID):
         else:
             return [False, f">>> You're already a citizen of {nations[nationID]['name']}."]
 
+def moveToProvince(discordID, targetProvince):
+    targetprovinceID = -1
+    if targetProvince.isdigit():
+        targetProvinceID = int(targetProvince)
+    else:
+        targetProvinceID = int(getProvinceID(targetProvince))
+    playerProvID = getPlayerProvince(discordID)[2]
+    nearbyProvinces = getAdjecentProvinces(playerProvID)
+    print (str(nearbyProvinces))
+    lastProvinceMove = datetime.datetime.strftime(db.getData('lastProvinceMove', 'users', f"WHERE discordid='{str(discordID)}'")[0]
+    , '%Y-%m-%d')
+    today = datetime.datetime.now().strftime('%Y-%m-%d')
+    if (lastProvinceMove == today):
+        return [False, ">>> You already moved today."]
+    else:
+        if playerProvID != targetProvinceID:
+            if targetProvinceID in nearbyProvinces:
+                if db.setData("users", f"province='{targetProvinceID}'", f"discordid='{discordID}'"):
+                    db.setData("users", f'lastProvinceMove=\'{datetime.datetime.now().strftime("%Y-%m-%d")}\'', f"discordid='{str(discordID)}'")
+                    return [True, f">>> You have and moved to the province of {getProvinceName(targetProvinceID)}."]
+                else:
+                    return [False, f">>> There was a serverside error. Did you sign up with !xp?"]
+            else:
+                return [False, f">>> You can only move to adjecent provinces. Type !np to see nearby provinces."]
+        else:
+            return [False, f">>> You can't move to the province you're already in."]
+    return [False, f">>> Error."]
+
+
+
 def getPlayerNation(discordID):
     nationality = db.getData("nationality", "users", f"WHERE discordid='{str(discordID)}'")[0]
     try:
@@ -109,6 +142,19 @@ def getPlayerNation(discordID):
 def getPlayerProvince(discordID):
     try:
         provinceID = db.getData("province", "users", f"WHERE discordid='{str(discordID)}'")[0]
-        return [True, getProvinceName(provinceID)]
+        return [True, getProvinceName(provinceID), provinceID]
     except:
         return [False, "Error."]
+
+def getAdjecentProvinces(provinceID):
+    try:
+        # '1,3,4'
+        adjecentProvincesSTR = db.getData("adjecentProvinces", "provinces", f"WHERE provinceID={provinceID}")[0]
+        adjecentProvinces = adjecentProvincesSTR.split(",")
+        newArray = []
+        for i in range(0, len(adjecentProvinces)):
+            newArray.append(int(adjecentProvinces[i]))
+        return newArray
+    except:
+        return False
+

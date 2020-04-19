@@ -216,7 +216,7 @@ async def on_message(message):
         if (message.content == "!use"):
                 await message.channel.send(">>> Invalid syntax. Please use !combine <item name> with <second item name>.")
         elif (reply[0] == False):
-            await message.channel.send(">>>" + reply[1])
+            await message.channel.send(">>> " + reply[1])
     if message.content.startswith("!use"):
         regex = r"!use (.*)"
         m = re.search(regex, message.content)
@@ -246,6 +246,33 @@ async def on_message(message):
             await message.channel.send(f">>> You are currently located in **{prov[1]}**.")
         else:
             await message.channel.send(f">>> There was an error somewhere. Are you signed up properly?")
+    if message.content in ["!adjecent", "!a", "!adjecentprovinces", "!nearbyprovinces", "!np"]:
+        playerProvince = nations.getPlayerProvince(message.author.id)[2]
+        nearbyProvinces = nations.getAdjecentProvinces(playerProvince)
+        reply = ">>> "
+        if nearbyProvinces != False:
+            reply += f"Nearby provinces to {nations.getProvinceName(playerProvince)} are: "
+            for i in range(0, len(nearbyProvinces)):
+                reply += f"{nations.getProvinceName(nearbyProvinces[i])} ({nearbyProvinces[i]})"
+                if i == len(nearbyProvinces)-2:
+                    reply += " and "
+                elif i < len(nearbyProvinces)-2:
+                    reply += ", "
+                else:
+                    reply += "."
+            await message.channel.send(reply)
+        else:
+            await message.channel.send(">>> There was an error. Did you sign up with !xp and join a nation with !join?")
+    if message.content.startswith("!moveto"):
+        if message.content == "!moveto":
+            await message.channel.send(">>> The syntax is !moveto [province ID/name]. And you can only use it once per day!")
+        else:
+            regex = r"!moveto (.*)"
+            m = re.search(regex, message.content)
+            targetID = m.group(1)
+            reply = nations.moveToProvince(message.author.id, targetID)
+            await message.channel.send(reply[1])
+
 
 
 
