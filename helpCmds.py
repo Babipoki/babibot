@@ -11,7 +11,8 @@ generalCommands = [
     ["!use [item]", "Use an item, like playing with a balloon, or chugging a potion."],
     ["!give [mention] [amount] [item]", "Give someone an amount of items you specified."],
     ["!pay [mention] [amount]", "Pay someone."],
-    ["!combine [x] with [y]", "Combine two items from your inventory to try to craft something new."]
+    ["!combine [x] with [y]", "Combine two items from your inventory to try to craft something new."],
+    ["!gamble [amount]", "Gamble at the casino! Input your dollars."]
 ]
 
     

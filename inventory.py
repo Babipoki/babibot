@@ -369,13 +369,18 @@ def giveItem (fromDiscordID, toDiscordID, quantity, item):
     else:
         return f">>> You don't have that item, or you followed wrong syntax. Use !give [mention] [qt] [item]."
 
-def payDollars (fromDiscordID, toDiscordID, quantity):
+def payDollars (fromDiscordID:int, toDiscordID, quantity):
+    giverDollars = 0
     if (toDiscordID == fromDiscordID):
         return ">>> You're trying to pay to yourself. That's not even how Patreon works."
-    giverDollars = int(db.getData("dollars", "users", f"WHERE discordid='{str(fromDiscordID)}'")[0])
+    if fromDiscordID != -1:
+        giverDollars = int(db.getData("dollars", "users", f"WHERE discordid='{str(fromDiscordID)}'")[0])
+    else:
+        giverDollars = 9999999
     recipientDollars = int(db.getData("dollars", "users", f"WHERE discordid='{str(toDiscordID)}'")[0])
     if (giverDollars >= int(quantity)):
-        db.setData("users", f"dollars={str(giverDollars - int(quantity))}", f"discordid='{str(fromDiscordID)}'")
+        if fromDiscordID != -1:
+            db.setData("users", f"dollars={str(giverDollars - int(quantity))}", f"discordid='{str(fromDiscordID)}'")
         db.setData("users", f"dollars={str(recipientDollars + int(quantity))}", f"discordid='{str(toDiscordID)}'")
         return True
     else:

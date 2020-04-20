@@ -1,4 +1,4 @@
-import discord, random, string, mysql.connector, sys, asyncio, datetime, logging, os, time, battler, db, work, helpCmds, inventory, ia, nations, re
+import discord, random, string, mysql.connector, sys, asyncio, datetime, logging, os, time, battler, db, work, helpCmds, inventory, ia, nations, re, minigames
 from mysql.connector import errorcode
 from systemd.journal import JournalHandler
 from discord.ext import commands
@@ -272,6 +272,15 @@ async def on_message(message):
             targetID = m.group(1)
             reply = nations.moveToProvince(message.author.id, targetID)
             await message.channel.send(reply[1])
+    if message.content.startswith("!gamble"):
+        if message.content == "!gamble":
+            await message.channel.send(">>> The syntax is !gamble [amount]. The chances are currently 49%.")
+        else:
+            regex = r"!gamble (.*)"
+            m = re.search(regex, message.content)
+            amount = m.group(1)
+            reply = minigames.gamble(message.author.id, int(amount))
+            await message.channel.send(reply)
 
 
 
