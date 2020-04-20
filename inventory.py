@@ -439,9 +439,11 @@ def useItem(discordID, item):
             luck = random.randint(0, 100)
             if 0 <= luck <= 4:
                 removeFromInventory(discordID, item, 1)
+                addToInventory(discordID, "popped balloon", 1)
                 return [True, "You tried to play with the balloon, but a bully came over and popped it."]
             elif 5 <= luck <= 45:
                 removeFromInventory(discordID, item, 1)
+                addToInventory(discordID, "popped balloon", 1)
                 return [True, "You were playing with your balloon, but suddenly it hit the grass and popped."]
             elif 46 <= luck <= 100:
                 return [True, "Yay! You had fun playing with your balloon!"]
