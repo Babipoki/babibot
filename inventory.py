@@ -185,48 +185,103 @@ items = [
         "craft": {
 
         }
+    },
+    {
+        "name": "clay",
+        "plural": "clay",
+        "sellPrice": 1,
+        "sellable": True,
+        "tradable": True,
+        "spawnRate": 6.00,
+        "spawnMin": 1,
+        "spawnMax": 14,
+        "craft": {
+            "furnace": {
+                "result": "brick",
+                "resultQuantity": 1,
+                "inputQuantity": [4, 0]
+            }
+        }
+    },
+    {
+        "name": "brick",
+        "plural": "bricks",
+        "sellPrice": 3,
+        "sellable": True,
+        "tradable": True,
+        "spawnRate": 1.00,
+        "spawnMin": 1,
+        "spawnMax": 2,
+        "craft": {
+            
+        }
+    },
+    {
+        "name": "bucket of sand",
+        "plural": "buckets of sand",
+        "sellPrice": 1,
+        "sellable": True,
+        "tradable": True,
+        "spawnRate": 4.00,
+        "spawnMin": 1,
+        "spawnMax": 3,
+        "craft": {
+            "bucket of water": {
+                "result": "bucket of cement",
+                "resultQuantity": 5,
+                "inputQuantity": [1, 2],
+            },
+            "bucket of cement": {
+                "result": "bucket of mortar",
+                "resultQuantity": 1,
+                "inputQuantity": [1, 1]
+            }
+        }
+    },
+    {
+        "name": "bucket of water",
+        "plural": "buckets of water",
+        "sellPrice": 1,
+        "sellable": True,
+        "tradable": True,
+        "spawnRate": 8.00,
+        "spawnMin": 1,
+        "spawnMax": 4,
+        "craft": {
+            "bucket of sand": {
+                "result": "bucket of cement",
+                "resultQuantity": 5,
+                "inputQuantity": [2, 1]
+            }
+        }
+    },
+    {
+        "name": "bucket of mortar",
+        "plural": "bucket of mortar",
+        "sellPrice": 5,
+        "sellable": True,
+        "tradable": True,
+        "spawnRate": 0.5,
+        "spawnMin": 1,
+        "spawnMax": 2,
+        "craft": {
+            
+        }
     }
 ]
 
 '''
-inventorySlots: [
-    { 
-        'item' : "",
-        'quantity': 0
-    },
-    { 
-        'item' : "",
-        'quantity': 0
-    },
-    { 
-        'item' : "",
-        'quantity': 0
-    },
-    { 
-        'item' : "",
-        'quantity': 0
-    },
-    { 
-        'item' : "",
-        'quantity': 0
-    },
-    { 
-        'item' : "",
-        'quantity': 0
-    },
-    { 
-        'item' : "",
-        'quantity': 0
-    },
-    { 
-        'item' : "",
-        'quantity': 0
-    },
-    { 
-        'item' : "",
-        'quantity': 0
-    } 
-]
+"name": "",
+        "plural": "",
+        "sellPrice": 0,
+        "sellable": True,
+        "tradable": True,
+        "spawnRate": 1.00,
+        "spawnMin": 1,
+        "spawnMax": 1,
+        "craft": {
+            
+        }
 '''
 
 # item1name::item1quantity||item2name...
