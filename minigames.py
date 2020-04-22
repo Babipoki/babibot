@@ -7,7 +7,7 @@ def gamble(discordID:int, amount:int):
     if playerMoney >= amount:
         victory = True if random.randint(0, 100) >= 51 else False
         if victory:
-            if inventory.payDollars(-1, discordID, amount * 2):
+            if inventory.payDollars(-1, discordID, amount):
                 return f">>> The odds were in your favor. You won {amount * 2} dollars."
             else:
                 return f">>> There was an error with payout you out."
