@@ -1,4 +1,4 @@
-import db, random
+import db, random, ia
 
 
 items = [
@@ -267,6 +267,45 @@ items = [
         "craft": {
             
         }
+    },
+    {
+        "name": "mystery box",
+        "plural": "mystery boxes",
+        "sellPrice": 1,
+        "sellable": True,
+        "tradable": True,
+        "spawnRate": 6.00,
+        "spawnMin": 1,
+        "spawnMax": 2,
+        "craft": {
+            
+        }
+    },
+    {
+        "name": "shotgun shell",
+        "plural": "shotgun shells",
+        "sellPrice": 1,
+        "sellable": True,
+        "tradable": True,
+        "spawnRate": 4.00,
+        "spawnMin": 1,
+        "spawnMax": 8,
+        "craft": {
+            
+        }
+    },
+    {
+        "name": "Remington Model 11 shotgun",
+        "plural": "Remington Model 11 shotguns",
+        "sellPrice": 23,
+        "sellable": True,
+        "tradable": True,
+        "spawnRate": 1.00,
+        "spawnMin": 1,
+        "spawnMax": 1,
+        "craft": {
+            
+        }
     }
 ]
 
@@ -509,5 +548,10 @@ def useItem(discordID, item):
             removeFromInventory(discordID, item, 1)
             db.setData("users", f"experience={playerXP+randomXP}", f"discordid='{str(discordID)}'")
             return [True, f"You drank the XP potion and gained {randomXP} XP from it."]
+        if (item == "mystery box"):
+            randItemID = random.randint(0, len(items))
+            if (addToInventory(discordID, items[randItemID]['name'], 1)):
+                removeFromInventory(discordID, "mystery box", 1)
+                return [True, f"You open a mystery box and find {ia.indefinite_article(items[randItemID]['name'])} **{items[randItemID]['name']}** inside!"]
         return [True, f"Nothing interesting happened from using your {item}."]
     return [False, "You don't have such an item to use it."]
