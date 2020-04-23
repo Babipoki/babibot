@@ -306,7 +306,48 @@ items = [
         "craft": {
             
         }
+    },
+    {
+        "name": "boomerang",
+        "plural": "boomerangs",
+        "sellPrice": 5,
+        "sellable": True,
+        "tradable": True,
+        "spawnRate": 2.00,
+        "spawnMin": 1,
+        "spawnMax": 2,
+        "craft": {
+            
+        }
+    },
+    {
+        "name": "cup of tea",
+        "plural": "cups of tea",
+        "sellPrice": 2,
+        "sellable": True,
+        "tradable": True,
+        "spawnRate": 1.50,
+        "spawnMin": 1,
+        "spawnMax": 3,
+        "craft": {
+            
+        }
+    },
+    {
+        "name": "empty cup",
+        "plural": "empty cups",
+        "sellPrice": 1,
+        "sellable": True,
+        "tradable": True,
+        "spawnRate": 1.00,
+        "spawnMin": 1,
+        "spawnMax": 3,
+        "craft": {
+            
+        }
     }
+
+
 ]
 
 '''
@@ -553,5 +594,9 @@ def useItem(discordID, item):
             if (addToInventory(discordID, items[randItemID]['name'], 1)):
                 removeFromInventory(discordID, "mystery box", 1)
                 return [True, f"You open a mystery box and find {ia.indefinite_article(items[randItemID]['name'])} **{items[randItemID]['name']}** inside!"]
+        if (item == "cup of tea"):
+            #add HP here
+            removeFromInventory(discordID, item, 1)
+            return [True, f"You drink a cup of tea. It tastes great and restores some HP."]
         return [True, f"Nothing interesting happened from using your {item}."]
     return [False, "You don't have such an item to use it."]

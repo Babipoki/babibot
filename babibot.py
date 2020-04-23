@@ -1,4 +1,4 @@
-import discord, random, string, mysql.connector, sys, asyncio, datetime, logging, os, time, battler, db, work, helpCmds, inventory, ia, nations, re, minigames
+import discord, random, string, mysql.connector, sys, asyncio, datetime, logging, os, time, battler, db, work, helpCmds, inventory, ia, nations, re, minigames, army
 from mysql.connector import errorcode
 from systemd.journal import JournalHandler
 from discord.ext import commands
