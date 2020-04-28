@@ -345,6 +345,19 @@ items = [
         "craft": {
             
         }
+    }, 
+    {
+        "name": "cookie",
+        "plural": "cookies",
+        "sellPrice": 1,
+        "sellable": True,
+        "tradable": True,
+        "spawnRate": 3.00,
+        "spawnMin": 1,
+        "spawnMax": 8,
+        "craft": {
+            
+        }
     }
 
 
