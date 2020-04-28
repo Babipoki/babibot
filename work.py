@@ -27,14 +27,14 @@ jobs = [
         'minXP': 35,
         'salary': 8,
         'xpPerWork': 4,
-        'customEvents': ["You exchanged a popped balloon for a new one, but then you noticed a pattern.", "You had a blast... popping all the balloons at the end of the shift.", "What a boring day..."]
+        'customEvents': ["You exchanged a popped balloon for a new one, but then you noticed a pattern.", "You had a blast... popping all the balloons at the end of the shift.", "What a boring day...", "Nothing interesting happened today.", "You sold a metric ton of balloons today! Well... not literally."]
     },
     {
         'name': 'Traveling Balloon Merchant',
         'minXP': 50,
         'salary': 10,
         'xpPerWork': 5,
-        'customEvents': ["You traveled to five cities today to bring joy to all the children.", "You were arrested by the gang of children and had to pay a fine of 15 balloons you were supposed to sell today."]
+        'customEvents': ["You traveled to five cities today to bring joy to all the children.", "You were arrested by the gang of children and had to pay a fine of 15 balloons you were supposed to sell today.", "Nothing interesting happened today.", "Everyone was excited to buy your balloons today!"]
     },
     {
         'name': 'Banker',
@@ -98,6 +98,27 @@ jobs = [
         'salary': 450,
         'xpPerWork': 250,
         'customEvents': ["Nothing interesting happened today."]
+    },
+    {
+        'name': "Evil Lord's Henchman",
+        'minXP': 100000,
+        'salary': 750,
+        'xpPerWork': 350,
+        'customEvents': ["Nothing interesting happened today."]
+    },
+    {
+        'name': "Evil Lord's Advisor",
+        'minXP': 400000,
+        'salary': 950,
+        'xpPerWork': 550,
+        'customEvents': ["Nothing interesting happened today."]
+    },
+    {
+        'name': "Evil Lord Himself",
+        'minXP': 1000000,
+        'salary': 2500,
+        'xpPerWork': 1150,
+        'customEvents': ["You spent entire day doing evil things."]
     }
 ]
 
