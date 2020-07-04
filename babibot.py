@@ -1,4 +1,4 @@
-import discord, random, string, mysql.connector, sys, asyncio, datetime, logging, os, time, battler, db, work, helpCmds, inventory, ia, nations, re, minigames, army
+import discord, random, string, mysql.connector, sys, asyncio, datetime, logging, os, time, battler, db, work, helpCmds, inventory, ia, nations, re, minigames, army, genrace
 from mysql.connector import errorcode
 from systemd.journal import JournalHandler
 from discord.ext import commands
@@ -54,16 +54,16 @@ async def on_message(message):
         await dm_user(message.content.split(' ')[1], ' '.join(message.content.split(' ')[2:]))
 
     if (message.content.startswith('!newnickname') or message.content.startswith('!nn')):
-        nicknames1 = ["Cockflipper", "Succotash", "Fucking", "Derpy", "Alcoholic", "Intolerant", "Appealing", "Indonesian", "Seaside", "Thrifty", "Unenjoyable", "Stupid", "Naked", "Orchestrated", "Unidentified", "Stupid", "Unused", "Untitled", "Boring", "Cricketsniffing", "Disposable", "Deplorable", "Soviet", "Triggered", "Republican", "Cute", "Limitless", "Sobbing"]
+        nicknames1 = ["Cockflipper", "Succotash", "Fucking", "Derpy", "Alcoholic", "Intolerant", "Appealing", "Indonesian", "Seaside", "Thrifty", "Unenjoyable", "Stupid", "Naked", "Orchestrated", "Unidentified", "Stupid", "Unused", "Untitled", "Boring", "Cricketsniffing", "Disposable", "Deplorable", "Soviet", "Triggered", "Republican", "Cute", "Limitless", "Sobbing", "Durable", "Cuckblaster", "Paragon of"]
         nicknames2 = ["Charmander", "Bumbaloo", "Crocodile Hunter", "Puppy", "Radio Show Host", "Echidna", "Nut", "Dick", "Palm Tree", "Gangster", "Balloon", "Condomface", "Whippersnapper", "FUUUUUUUUUCK", "NPC", "side-quest NPC", "Lifeguard", "Donut", "Officer of Justice", "Buttsniffer", "Tree Branch", "Bunny Balloon", "Door Frame", "Screwdriver", "Mouse Balloon", "Cockroach", "Gorilla", "Sandshrew", "Scorbunny", "Pikachu", "Sobble"]
-        oneWordNicknames = ["Dorito", "Rex", "Ahhhhhhhhhh", "?XD", "Ponies :D", "♥ Anal ♥", "♥ S E B A S T I A N ♥", "fucking" + randomString(10), "xXxUnTiTlEdAnGeLxXx", "PUSSY!!!!!!!!", "Belend", "UNLICENSED ASS KICKER/KISSER", "Wuwu & Nillump", "actually belend", "fart XDDDDDDDDDDDDDDDDDD", "xXxUnfisted FisterxXx", 'xXxXgLoRiOuSpRiNcEoFdArKnEsSXxXx', "Sexmaster Extraordinaire", "Fucky Sucky", "Gender Gap", "D R A G O N  O F  J U S T I C E"]
+        oneWordNicknames = ["Dorito", "Rex", "Ahhhhhhhhhh", "?XD", "Ponies :D", "♥ Anal ♥", "♥ S E B A S T I A N ♥", "fucking" + randomString(random.randint(2, 10)), "xXxUnTiTlEdAnGeLxXx", "PUSSY!!!!!!!!", "Belend", "UNLICENSED ASS KICKER/KISSER", "Wuwu & Nillump", "actually belend", "fart XDDDDDDDDDDDDDDDDDD", "xXxUnfisted FisterxXx", 'xXxXgLoRiOuSpRiNcEoFdArKnEsSXxXx', "Sexmaster Extraordinaire", "Fucky Sucky", "Gender Gap", "D R A G O N  O F  J U S T I C E"]
         insults = ["sucker", "boomer", "asshole", "cuck", "pipsqueak", "dickwad", "edgelord", "Mr Crangis McBasketball"]
         nickname = ""
         if random.randint(0, 1) == 1:
             nickname = random.choice(oneWordNicknames)
         else:
             nickname = random.choice(nicknames1) + ' ' + random.choice(nicknames2)
-        msg = '{0.author.mention}, your new nickname is '.format(message) + nickname +'. Enjoy, ' + random.choice(insults) +'.'
+        msg = '{0.author.mention}, your new nickname is **'.format(message) + nickname +'**. Enjoy, ' + random.choice(insults) +'.'
         await message.channel.send(msg)
         await message.author.edit(nick = nickname)
     if (message.content.startswith('!xp')):
@@ -281,6 +281,15 @@ async def on_message(message):
             amount = m.group(1)
             reply = minigames.gamble(message.author.id, int(amount))
             await message.channel.send(reply)
+    if message.content.startswith("!genrace"):
+        if message.content == "!genrace":
+            await message.channel.send(">>> The syntax is !genrace [nation]. Possible choices are: world, junjian, feretti.")
+        else:
+            regex = r"!genrace (.*)"
+            m = re.search(regex, message.content)
+            nation = m.group (1)
+            reply = genrace.getRace(nation)
+            await message.channel.send(reply[1])
 
 
 
