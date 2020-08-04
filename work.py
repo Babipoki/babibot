@@ -54,35 +54,35 @@ jobs = [
         'name': 'Mercenary Guild Leader',
         'minXP': 200,
         'salary': 16,
-        'xpPerWork': 8,
+        'xpPerWork': 12,
         'customEvents': ["Nothing interesting happened today.", "You hired some great mercenaries today.", "You caught a rat today. Then you ate it.", "You bought a balloon on your way home.", "You had a great time.", "You returned a stolen purse to an old lady.", "You led five mercenaries in a caravan route today."]
     },
     {
         'name': 'Bank Owner',
         'minXP': 500,
         'salary': 25,
-        'xpPerWork': 10,
-        'customEvents': ["Nothing interesting happened today.", "You had a party after work."]
+        'xpPerWork': 25,
+        'customEvents': ["Nothing interesting happened today.", "You had a party after work.", "You gave your employee a 'raise'.", "You had twenty five meetings today.", "You spent entire day browsing YouTube."]
     },
     {
         'name': "Mayor's Advisor",
         'minXP': 1000,
         'salary': 45,
-        'xpPerWork': 15,
+        'xpPerWork': 45,
         'customEvents': ["Nothing interesting happened today.", "Mayor threw a great party for you today."]
     },
     {
         'name': "Mayor",
         'minXP': 5000,
         'salary': 95,
-        'xpPerWork': 45,
+        'xpPerWork': 85,
         'customEvents': ["Nothing interesting happened today.", "You signed way too many bills today."]
     },
     {
         'name': "Baron's Advisor",
         'minXP': 9500,
         'salary': 125,
-        'xpPerWork': 95,
+        'xpPerWork': 105,
         'customEvents': ["Nothing interesting happened today."]
     },
     {
