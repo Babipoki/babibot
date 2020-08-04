@@ -55,7 +55,7 @@ jobs = [
         'minXP': 200,
         'salary': 16,
         'xpPerWork': 8,
-        'customEvents': ["Nothing interesting happened today.", "You hired some great mercenaries today."]
+        'customEvents': ["Nothing interesting happened today.", "You hired some great mercenaries today.", "You caught a rat today. Then you ate it.", "You bought a balloon on your way home.", "You had a great time.", "You returned a stolen purse to an old lady.", "You led five mercenaries in a caravan route today."]
     },
     {
         'name': 'Bank Owner',
