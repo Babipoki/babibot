@@ -41,7 +41,7 @@ jobs = [
         'minXP': 85,
         'salary': 12,
         'xpPerWork': 6,
-        'customEvents': ["You gave a loan to balloon entrepreneur today.", "Nothing interesting happened today.", "Your bank was robbed today."]
+        'customEvents': ["You gave a loan to balloon entrepreneur today.", "Nothing interesting happened today.", "Your bank was robbed today.", "You had a very busy day at the bank.", "You had to give your boss a 'raise'.", "You were responsible for decorating the bank with balloons today."]
     },
     {
         'name': 'Mercenary',

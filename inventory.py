@@ -291,7 +291,11 @@ items = [
         "spawnMin": 1,
         "spawnMax": 8,
         "craft": {
-            
+            "Remington Model 11 shotgun (Loaded)": {
+                "result": "shotgun shell",
+                "resultQuantity": 1,
+                "inputQuantity": [1, 1]
+            }
         }
     },
     {
@@ -304,6 +308,11 @@ items = [
         "spawnMin": 1,
         "spawnMax": 1,
         "craft": {
+            "shotgun shell": {
+                "result": "Remington Model 11 shotgun (Loaded)",
+                "resultQuantity": 1,
+                "inputQuantity": [1, 1]
+            }
             
         }
     },
@@ -355,6 +364,19 @@ items = [
         "spawnRate": 3.00,
         "spawnMin": 1,
         "spawnMax": 8,
+        "craft": {
+            
+        }
+    },
+    {
+        "name": "Remington Model 11 shotgun (Loaded)",
+        "plural": "Remington Model 11 shotguns",
+        "sellPrice": 23,
+        "sellable": True,
+        "tradable": True,
+        "spawnRate": 1.00,
+        "spawnMin": 1,
+        "spawnMax": 1,
         "craft": {
             
         }
@@ -589,11 +611,32 @@ def useItem(discordID, item):
                 removeFromInventory(discordID, item, 1)
                 addToInventory(discordID, "popped balloon", 1)
                 return [True, "You tried to play with the balloon, but a bully came over and popped it."]
-            elif 5 <= luck <= 45:
+            elif 5 <= luck <= 14:
+                removeFromInventory(discordID, item, 1)
+                addToInventory(discordID, "popped balloon", 1)
+                return [True, "You squeezed your balloon too hard and it popped!"]
+            elif 15 <= luck <= 25:
+                removeFromInventory(discordID, item, 1)
+                addToInventory(discordID, "popped balloon", 1)
+                return [True, "You tried to draw a smiley face on a balloon but it popped."]
+            elif 26 <= luck <= 32:
+                removeFromInventory(discordID, item, 1)
+                addToInventory(discordID, "popped balloon", 1)
+                return [True, "As you were reaching your hand to your balloon, it went pop before you even touched it! Nooo!"]
+            elif 33 <= luck <= 45:
                 removeFromInventory(discordID, item, 1)
                 addToInventory(discordID, "popped balloon", 1)
                 return [True, "You were playing with your balloon, but suddenly it hit the grass and popped."]
-            elif 46 <= luck <= 100:
+            elif 46 <= luck <= 64:
+                return [True, "You were very rough with the balloon while playing with it, but at least it didn't pop!"]
+            elif 65 <= luck <= 75:
+                addToInventory(discordID, "balloon", 1)
+                return [True, "While playing with your balloon, you found another one! You added the extra balloon to your inventory!"]
+            elif 76 <= luck <= 85:
+                shows = ["first season of Game of Thrones", "second season of Game of Thrones", "episode of Gravity Falls", "episode of The Office", "episode of Diners, Drive-Ins and Dives", "VOD of TheYordleScout", "anthology of Spider-Man movies"]
+                randShow = shows[random.randint(0, len(shows))]
+                return [True, f"You tried to sit on the balloon to pop it but forgot that you were sitting on it and watched the entire {randShow}."]
+            elif 86 <= luck <= 100:
                 return [True, "Yay! You had fun playing with your balloon!"]
         # XP bottle
         if (item == "XP bottle"):
