@@ -371,7 +371,7 @@ items = [
     {
         "name": "Remington Model 11 shotgun (Loaded)",
         "plural": "Remington Model 11 shotguns",
-        "sellPrice": 23,
+        "sellPrice": 24,
         "sellable": True,
         "tradable": True,
         "spawnRate": 1.00,
@@ -380,8 +380,20 @@ items = [
         "craft": {
             
         }
+    },
+    {
+        "name": "blowgun",
+        "plural": "blowguns",
+        "sellPrice": 3,
+        "sellable": True,
+        "tradable": True,
+        "spawnRate": 1.50,
+        "spawnMin": 1,
+        "spawnMax": 2,
+        "craft": {
+            
+        }
     }
-
 
 ]
 

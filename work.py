@@ -20,7 +20,7 @@ jobs = [
         'minXP': 15,
         'salary': 6,
         'xpPerWork': 3,
-        'customEvents': ["You were offered a balloon in exchange for not fining a ticketless boy.", "You had a boring day.", "Nothing interesting happened."]
+        'customEvents': ["You were offered a balloon in exchange for not fining a ticketless boy.", "You had a boring day.", "Nothing interesting happened.", "You met a ghost on the train today.", "You crossed 13 countries today.", "You worked hard today, good job!"]
     },
     {
         'name': 'Balloon Vendor',
@@ -48,7 +48,7 @@ jobs = [
         'minXP': 125,
         'salary': 14,
         'xpPerWork': 7,
-        'customEvents' : ["You protected a traveling caravan today.", "You didn't get hired by anybody today.", "Today was boring.", "What a tiring day...", "You fought in a war today."]
+        'customEvents' : ["You protected a traveling caravan today.", "You didn't get hired by anybody today.", "Today was boring.", "What a tiring day...", "You fought in a war today.", "You fought a dragon today.", "You ambushed a caravan today.", "You crashed a helicopter today, but managed to survive.", "You were hired to pop thousands of balloons today.", "You helped a kid cross the road today."]
     },
     {
         'name': 'Mercenary Guild Leader',
